@@ -4,7 +4,7 @@ CREATE DATABASE db_space;
 USE db_space; 
 -- MySQL dump 10.13  Distrib 5.7.28, for Win64 (x86_64)
 --
--- Host: localhost    Database: vesigna_635489
+-- Host: localhost    Database: db_space
 -- ------------------------------------------------------
 -- Server version	5.7.28
 
