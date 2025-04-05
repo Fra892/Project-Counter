@@ -1,0 +1,117 @@
+#result-area{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+.scheda-tratta{
+    width: 80%;
+    background-color: white;
+    height: fit-content;
+    border-radius: 20px;
+    padding: 0.4rem;
+}
+
+.scheda-tratta .scheda-tratta-info{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.scheda-tratta-info p{
+    border-radius: 3px;
+    color: grey;
+    font-family: Arial, Helvetica, sans-serif;
+    /* gli agent stylesheet lo settano automaticamente bold 
+       dunque lo cambiamo*/
+    font-weight:lighter;
+    min-width: 120px;
+    margin: 0;
+}
+
+.voli-container{
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.info-linea-a{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.info-linea-b{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.info-linea-a p, .info-linea-b p{
+    color: #1c241c;
+    font-family: Arial, Helvetica, sans-serif;
+    /* gli agent stylesheet lo settano automaticamente bold 
+       dunque lo cambiamo*/
+    font-weight:lighter;
+    font-size: 0.7em;
+    text-align: center;
+    margin: 0;
+}
+.visual{
+    position: relative;
+}
+.visual hr{
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #b9080e;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: none;
+
+}
+.pallini {
+    position: absolute;
+    top: 4px;
+    height: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+}
+
+.pallino{
+    width: 10px;
+    height: 10px;
+    background-size: contain;
+}
+.pallino.scalo{
+    background-image: url("../icons/scalo.png");
+}
+.pallino.target{
+    background-image: url("../icons/target.png");
+}
+
+.star-container {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.star {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /* vertici all'interno del box */
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    background-color: lightgray;
+    transition: background-color 1s ease;
+}
+.star.filled {
+    background-color: gold;
+}
+
+.data-separatore{
+    font-family: Arial, Helvetica, sans-serif;
+    color: goldenrod;
+}

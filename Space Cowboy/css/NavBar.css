@@ -1,0 +1,50 @@
+
+@font-face {
+    font-family: 'Karatina-Bold';
+    src: url('../fonts/Karantina-Bold.ttf') format('truetype'); 
+}
+
+@font-face {
+    font-family: 'Karatina-Light';
+    src: url('../fonts/Karantina-Light.ttf') format('truetype'); 
+}
+
+body{
+    background-color: #ebca97;
+    position: relative;
+}
+#title {
+    font-family: "Karatina-Bold";
+    font-size: 2rem;
+    width: 30%;
+    padding: 0.2rem;
+    text-align: center;
+    background-color: #1c241c;
+    color: #ebca97;
+}
+#wrapper{
+    background-color: #1c241c;
+    flex-direction: row;
+    display: flex;
+    align-items: stretch;
+}
+html,body{
+    margin: 0;
+}
+
+#NavBar{
+    background-color: #1c241c;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 70%;
+}
+
+#NavBar a{
+    flex: 1 1 auto;
+    text-align: center;
+    color: #ebca97;
+    font-family: "Karatina-Light";
+    text-decoration: none;
+    font-size: 2rem;
+}

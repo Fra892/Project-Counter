@@ -1,0 +1,91 @@
+/* per i vari select e date evitiamo incongruenze */
+* {
+    box-sizing: border-box;
+}
+/* stretch per allinearli per la lunghezza */
+#flex {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1em;
+}
+/* dimensione fissa per inputs */
+form input,
+form select {
+    border-radius: 4px;
+    border: 1px solid black;
+    width: 10rem;
+    height: 1.5rem;
+}
+/* tutti gli header */
+form h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: grey;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+/* tutti gli elementi sono incolonnati */
+form {
+    align-items: center; 
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+/* le sezioni sono incolonnate con gap minore */
+.flex-form form div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+/* tutte le label */
+form div label {
+    font-family: Arial, Helvetica, sans-serif;
+    color: grey;
+}
+
+/* sarebbe impostata su grid altrimenti */
+#pulsantiera-aggiungi {
+    display: block;
+}
+
+.flex-form, .grid-form{
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+    padding: 1em;
+
+}
+.grid-form form div {
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr;
+    align-items: center;
+    gap: 0.7em;
+}
+
+/* Aggiungi questa regola per evitare che i form siano troppo corti */
+
+/* esito dell'operazione */
+#msg {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    font-size: 3rem;
+    text-align: center;
+}
+
+#msg.valido {
+    color: green;
+}
+
+#msg.invalido {
+    color: red;
+}
+
+#aggiungi:invalid{
+    border: solid red 1px;
+}
+
+
+
+

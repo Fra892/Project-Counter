@@ -1,0 +1,212 @@
+/* CSS PER LA MAIN PAGE (CERCA E AGGIUNTA DINAMICA DEI PREFERITI) */
+hr{
+    background-color: #ebca97;
+    width: 2px;
+    border: none;
+    border-radius: 2px;
+}
+#SearchBar{
+    margin-top: 1rem;
+    background-color: white;
+    border-radius:20px;
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+#SearchBar.invalid{
+    outline: 2px solid #b9080e;
+}
+#SearchBar .elems label{
+    font-family: Arial, Helvetica, sans-serif;
+    color: grey;
+    margin-bottom: 0.7rem;
+}
+
+#SearchBar .elems .select-div{
+    font-family: Arial, Helvetica, sans-serif;
+    border: none;
+    margin-top: 0.7rem;
+}
+.select-div select{
+    border: none;
+}
+#SearchBar .elems input{
+    font-family: Arial, Helvetica, sans-serif;
+    border: none;
+    margin-top: 0.7rem;
+}
+#SearchBar .elems{
+    height: inherit;
+    padding: 0.7rem;
+}
+
+#SearchArea{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#cerca-div{
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+
+button {
+    background-color:#1c241c;
+    border-radius: 8px;
+    height: 8vh;
+    width: 20%;
+    border: none;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+    color: #ebca97;
+}
+
+dialog {
+    border-radius: 4px;
+    background-color: #ebca97;
+    color: #1c241c;
+    text-align: center;
+    width: 20%;
+    height: 20%;
+    z-index: 3;
+}
+#result-area{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+#info-generali{
+    width: 80%;
+    background-color: white;
+    display: flex;
+    align-items: stretch;
+    border-radius: 20px;
+    justify-content: space-between;
+    padding: 0.4rem;
+}
+#info-generali .select-div{
+    display: flex;
+    align-items: center;
+}
+#info-generali hr{
+    width: 50%;
+    border-radius: 10px;
+    background-color:#ebca97;
+}
+#info-generali h2{
+    color: grey;
+    font-family: Arial, Helvetica, sans-serif;
+    /* gli agent stylesheet lo settano automaticamente bold 
+       dunque lo cambiamo*/
+    font-weight:lighter;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.1em;
+}
+
+.scheda-tratta{
+    width: 80%;
+    background-color: white;
+    height: auto;
+    border-radius: 20px;
+    padding: 0.4rem;
+}
+
+.scheda-tratta .scheda-tratta-info{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.scheda-tratta-info p{
+    border-radius: 3px;
+    color: grey;
+    font-family: Arial, Helvetica, sans-serif;
+    /* gli agent stylesheet lo settano automaticamente bold 
+       dunque lo cambiamo*/
+    font-weight:lighter;
+    min-width: 120px;
+    margin: 0;
+}
+
+.voli-container{
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.info-linea-a{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.info-linea-a p{
+    color: #1c241c;
+    font-family: Arial, Helvetica, sans-serif;
+    /* gli agent stylesheet lo settano automaticamente bold 
+       dunque lo cambiamo*/
+    font-weight:lighter;
+    font-size: 0.7em;
+    text-align: center;
+    margin: 0;
+}
+.visual{
+    position: relative;
+}
+.visual hr{
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #b9080e;
+    margin-top: 4px;
+    margin-bottom: 4px;
+
+}
+.pallini {
+    position: absolute;
+    top: 4px;
+    height: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+}
+
+.pallino{
+    width: 10px;
+    height: 10px;
+    background-size: contain;
+}
+.pallino.scalo{
+    background-image: url("../icons/scalo.png");
+}
+.pallino.target{
+    background-image: url("../icons/target.png");
+}
+
+.star-container {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.star {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /* vertici all'interno del box */
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    background-color: lightgray;
+    transition: background-color 1s ease;
+}
+
+.star.filled {
+    background-color: gold;
+}
+
+

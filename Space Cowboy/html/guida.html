@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang = "it">
+    <head>
+        <meta charset = "utf-8">
+        <title>Space Cowboy Flight Finder</title>
+        <link rel = "stylesheet" href = "../css/NavBar.css">
+        <link rel = "stylesheet" href = "../css/guida.css">
+        <meta name = "viewport" content = "width = device-width">
+        <meta name = "author" content = "Francesco Vesigna">
+        <meta name = "description" content = "Login page of the Website">
+    </head> 
+    <body>
+        <div id = "wrapper">
+            <div id = "title">
+                <h1>Space Cowboy</h1>
+            </div>
+            <div id = "NavBar">
+                <a href = "../php/pagine/home.php"> Home </a>
+            </div>
+        </div> 
+    <main>
+        <!-- Descrizione del progetto -->
+        <section>
+            <h3>Specifiche del Progetto</h3>
+            <p>
+                Space Cowboy Flight Finder è un tabellone di voli elettronico.
+            </p>
+            <p>     
+                Gli obiettivi che il progetto si prefligge sono:
+            </p>
+            <ul>
+                <li>Realizzazione di un sistema per la ricerca di tratte</li>
+                <li>Realizzazione di un sistema che permette un salvataggio intuitivo di tratte e itinerari</li>
+                <li>Realizzazione di una interfaccia utente comoda e responsiva sia per gestori che fruitori</li>
+                <li>Realizzazione di un sistema di gestione di informazioni sicuro che bilancia il carico tra server e client</li>
+            </ul>
+            <p>
+                Il progetto è navigabile tramite la barra di navigazione in alto.
+             </p>
+        </section>
+        <!-- Funzionalità Utente non Registrato -->
+        <section>     
+            <h3>Funzionalità per un Utente non Registrato</h3>
+            <ul>
+                <li><strong>Cerca: </strong>  Permette di cercare e visualizzare le tratte con una certa logica
+                    <ul>
+                        <li>L'utente può cercare tutte le tratte disponibili dall'aeroporto A all'aeroporto B specificando la data di andata 
+                            e la data di ritorno (se omessa o avente formato errato verrano visualizzate solo le andate)
+                        </li>
+                        <li>
+                            L'utente può visuslizzare le tratte trovate tramite gli appositi
+                            bottoni (Andate Ritorni) o esegure una nuova ricerca tramite il bottone indietro
+                        </li>
+                        <li>
+                            L'utente vedrà sempre a schermo massimo 20 tratte delle n trovate, è però possibile filtrare le 
+                            n tratte trovate tramite 4 modalità diverse di oridinamento:
+                        <ul>
+                            <li> Tempo impiegato da A a B</li>
+                            <li> Prezzo totale</li>
+                            <li> Orario di partenza</li>
+                            <li> Orario di Arrivo</li>
+                        </ul>
+                        </li>
+                        <li>
+                            La visualizzazione di ogni tratta è intuitiva, vengono mostrati tutti gli orari di partenza e 
+                            di arrivo per gli scali, la partenza e la destinazione. 
+                        </li>
+                    </ul>
+                </li>
+                <li> <strong>Login e Registrazione:</strong>  
+                    <ul>
+                        <li>Nella pagina Login è possibile accedere al proprio account inserendo username e password. </li>
+                        <li>Se non si possiede un account è possibile accedere alla pagina di signup che permette la registrazione. <br> 
+                        !! Dopo la registrazione è necessario accedere tramite il link "hai già un account" !!
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <!-- Funzionalità Utente Registrato -->
+        <section>
+            <h3>Funzionalità per un Utente Registrato</h3>
+            <p>Rispetto alle funzionalità per un utente non registrato vengono aggiunte:</p>
+            <ul>
+                <li><strong>Preferiti:</strong> Un estensione vera e propria dell'esperienza di ricerca. 
+                    <ul>
+                        <li>Se l'utente è loggato può usufruire della stella presente sopra ogni scheda tratta per le tratte trovate. Essa permette di salvare la tratta tra i preferiti. 
+                            La stella può essere riempita (con un click) per aggiungere  o svuotata (con un click) per rimuovere la tratta dai preferiti. <br>
+                            !! Se un utente registrato fa una ricerca, il sistema si preoccupa di notificare la presenza di tratte preferite  presenti tra 
+                            quelle trovate rimepiendo la stella in automatico !!.
+                        </li>
+                        <li>
+                            Se l'utente è loggato è disponibile una pagina che mostra tutti i preferiti, con la stessa logica di visualizzazione della homepage è possibile 
+                            rimuovere o riaggiungere  tratte se l'utente cambia idea.
+                        </li>
+                        <li>
+                            I voli datati o cancellati possono essere rimossi dall'admin. L'utente può tener traccia di questi cambiamenti tramite 
+                            un avviso one time che notifica l'eliminazione di tratte salvate per via della rimozioni di voli.
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Logout:</strong> autoesplicativo</li>
+            </ul>
+        </section>
+
+        <!-- Funzionalità Admin -->
+        <section>
+            <h3>Funzionalità per l'Admin</h3>
+            <p>
+                L'amministratore ha accesso a tutte le funzionalità dell'utente con l'aggiunta del pannello di gestione che è composto da 3 funzionalità:
+            </p>
+            <ul>
+                <li>Aggiunta di un volo</li>
+                <li>Rimozione di tutti voli tra due aeroporti A e B in un giorno G</li>
+                <li>Eliminare tutti i voli precedenti a una certa data</li>
+            </ul>
+            </section>
+
+        <!-- Credenziali Admin -->
+        <section>
+            <h3>Accesso Admin</h3>
+            <p>Per accedere come Admin, utilizzare le seguenti credenziali:</p>
+            <p><strong>Username:</strong> admin </p>
+            <p><strong>Password:</strong> admin123_</p>
+        </section>
+        <!-- Utenti Registrati -->
+        <section>
+            <h3>Utenti già registrati</h3>
+            <section>
+                <p><strong>Username:</strong>  marco </p>
+                <p><strong>Password:</strong> marco1_2</p>
+            </section>
+            <section>
+                <p><strong>Username:</strong>  luigi </p>
+                <p><strong>Password:</strong> luigi1_2</p>
+            </section>
+            <section>
+                <p><strong>Username:</strong>  gianni </p>
+                <p><strong>Password:</strong> garcia1_</p>
+            </section>
+        </section>
+    </main>
+
+</body>
+</html>
