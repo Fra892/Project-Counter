@@ -376,7 +376,7 @@ start_game:
     // blocco endgame
 end_game:
     // controllo per sicurezza
-    if(my_sock < 0)
+    if(my_sock >= 0)
         close(my_sock);
     // resoconto dell'errore
     if(error != SUCCESS){
