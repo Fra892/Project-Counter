@@ -618,22 +618,15 @@ end_game:
 
         // aggiornamento interfaccia
         print_menu();
-        
-        int* error = (int*)malloc(sizeof(int));
-        *error = self->error;
+
         // print dell'errore
-        if(*error != SUCCESS)
-            show_error(*error);
-
-
+        if(self->error != SUCCESS)
+            show_error(self->error);
 
         // se era dinamico dobbiamo distruggere la struttura dati associata e toglierla dalla lista 
         if(self->is_dynamic) {
             delete_dynamic_thread(self);
-            if(*error != SUCCESS)
-                pthread_exit((void*)error);
-            else 
-                pthread_exit(NULL);
+            pthread_exit(NULL);
         }
     } while(1);
 
