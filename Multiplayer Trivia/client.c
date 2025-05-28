@@ -125,7 +125,10 @@ void print_ending(){
 int get_input(char* buffer, int dim){
     if(fgets(buffer, dim, stdin)){
         int got = strlen(buffer);
-        if(got > 0 && buffer[got - 1] == '\n'){
+        // stringa vuota
+        if(got <= 1)
+            return 0;
+        if(buffer[got - 1] == '\n'){
             buffer[got - 1] = '\0';
             return 1;
         } else {
