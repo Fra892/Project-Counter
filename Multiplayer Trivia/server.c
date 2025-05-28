@@ -528,6 +528,8 @@ void* thread_function(void* arg) {
 
             if(!insert_leaderboard(theme_index, nickname))
                 goto end_game;
+            
+            print_menu();
 
             for(int i = 0; i < NQUESTIONS; i++){
                 int done = 0, point = 0;
