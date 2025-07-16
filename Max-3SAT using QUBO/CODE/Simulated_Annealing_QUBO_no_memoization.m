@@ -1,4 +1,4 @@
-function [solution, satisfied_clauses] = Simulated_Annealing_QUBO(clauses, n)
+function [solution, satisfied_clauses] = Simulated_Annealing_no_memoization(clauses, n)
 % MAX3SAT_QUBO_APPROXIMATION - Solves a MAX-3SAT problem using the systematic QUBO approximation method.
 %
 % Inputs:
@@ -26,9 +26,9 @@ function [solution, satisfied_clauses] = Simulated_Annealing_QUBO(clauses, n)
 % Initialize QUBO matrix
 Q = zeros(n);
 
-% Initialize a dictionary to check the keys to not loop over candidates
-d = configureDictionary("string","double");
-% could have been a set but it is useful to plot the evolution %
+% ONLY FOR PLOT
+vector = int32([]);
+
 
 % For each clause, build the QUBO approximation and update the QUBO matrix
 for c = 1:size(clauses,1)     % we loop over the number of rows
@@ -49,7 +49,7 @@ for c = 1:size(clauses,1)     % we loop over the number of rows
             local_Q = [-1,  1,  1;
                         0, -1,  1;    
                         0,  0, -1];
-            % oreder doesn't matter %
+            % order doesn't matter %
         case 1 % Type 2: (xi OR xj OR NOT xk)
             local_Q = [0,  1,  -1;
                        0,  0,  -1;   
@@ -108,7 +108,6 @@ end
 % Set parameters for simulated annealing
 max_iter = 5000;
 initial_temp = 100;
-
 final_temp = 0.1;
 
 
@@ -125,31 +124,23 @@ best_solution = current_solution;
 best_energy = current_energy;
 
 temperature = initial_temp;
-iter = 0;
 
-while iter < max_iter
+for iter = max_iter: -1 : 1
     % Generate neighbor by flipping a random bit
     neighbor_solution = current_solution;
     idx = randi(n);
+
     % flipping the random bit
     neighbor_solution(idx) = 1 - neighbor_solution(idx);
-    % check dictionary
-    vettoreStr = num2str(neighbor_solution);
-    Str = convertCharsToStrings(vettoreStr);
-    if isKey(d,Str) 
-        continue;
-    end
-
     % energy of the qubo matrix 
-    neighbor_energy = neighbor_solution' * Q * neighbor_solution;  
+    neighbor_energy = neighbor_solution' * Q * neighbor_solution; 
 
-    % energy gap
+    % Energy gap
     delta_energy = neighbor_energy - current_energy;
-
+    
     % Metrpolis criterion 
     if delta_energy < 0 || rand() < exp(-delta_energy/temperature)
-        % we add the current energy to the bucket
-        d = insert(d,Str,neighbor_energy);
+        vector(end+1) = neighbor_energy;
         % we accepted the new energy as current 
         current_solution = neighbor_solution;
         current_energy = neighbor_energy;
@@ -158,23 +149,19 @@ while iter < max_iter
             best_energy = current_energy;
         end
     end
-        % Decrease temperature
+    
+    % Decrease temperature
     temperature = temperature * alpha;
-    iter = iter + 1;
 end
 
 % plotting of the energy 
-E = entries(d);
-V = E.Value;
-plot(0:(length(V)-1),V,'-r');
+plot(0:length(vector)-1,vector,'-r');
 xlabel('iter');
 ylabel('energy');
 title('energy evolution');
 % this represents the evolution of the simulated annealing
 
-% the insert method in the dictionary makes the order
-% of the entries equal to the order of the insertion
-% so the index of V is the i-th insertion 
+ 
 
 
 % we recall the best solution marked by SA
@@ -194,6 +181,7 @@ for c = 1:size(clauses,1)
     end
 end
 % print the results %
-fprintf('Number of satisfied clauses: %d out of %d memoization\n', satisfied_clauses, size(clauses,1));
+fprintf('Number of satisfied clauses: %d out of %d no memoization\n', satisfied_clauses, size(clauses,1));
 end
+
 
