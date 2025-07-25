@@ -5,7 +5,7 @@
 
 
 // blocco define macro
-#define PORT 4242           // numero della porta
+#define PORT 4242           // numero della porta su cui ascoltare
 #define NTHREADS 2          // numero di thread sempre presenti
 #define NTHEMES 2           // numero dei temi previsti
 #define NQUESTIONS 5        // numero delle domande previste
@@ -14,7 +14,7 @@
 #define MAXALEN 64          // massima lunghezza delle risposte
 #define MAXNICKLEN 16       // massima lunghezza per il nickname
 #define MAXTHEMELEN 64      // massima lunghezza per il tema 
-#define ADDR "127.0.0.1"    // indirizzo
+#define ADDR "127.0.0.1"    // indirizzo IP
 #define MAXBUFFER 2048      // buffer più grande allocabile
 
 
@@ -412,7 +412,6 @@ int delete_dynamic_thread(struct thread_node* self){
     // (DEBUG? non si eliminano thread dinamici o thread non esistenti)
     if(!*p || !(*p)->is_dynamic){
         pthread_mutex_unlock(&list_mutex);
-        perror("Errore nel codice");
         return 0;
     }
     *p = (*p)->next;
@@ -431,7 +430,7 @@ void* thread_function(void* arg) {
     do {
         int sock;
         char* buffer = (char*)malloc(sizeof(char) * MAXBUFFER), *pun;
-        char* nickname;
+        char* nickname = NULL;
         uint8_t type;
         int theme_index;
         int counter;
@@ -519,7 +518,7 @@ void* thread_function(void* arg) {
 
                 if(type == ENDQUIZ)
                     goto end_game;
-                if((self->error=recv_just_body(buffer,sock))!= SUCCESS)
+                if((self->error = recv_just_body(buffer,sock))!= SUCCESS)
                     goto end_game;
                 theme_index = atoi(buffer) - 1;  
                 break;  
@@ -601,8 +600,11 @@ void* thread_function(void* arg) {
 end_game:
         // eliminazione del nickname 
         pthread_mutex_lock(&self->mutex_nickname);
-        destroy_info_from_leaderboard(self->nickname);
-        free(self->nickname);
+        
+        if(self->nickname){
+            destroy_info_from_leaderboard(self->nickname);
+            free(self->nickname);
+        }
         self->nickname = NULL;
         pthread_mutex_unlock(&self->mutex_nickname);
     
@@ -613,8 +615,10 @@ end_game:
         pthread_mutex_unlock(&self->mutex_condition);
 
 
-        free(buffer);
-        free(nickname);
+        if(buffer)
+            free(buffer);
+        if(nickname)
+            free(nickname);
 
         // aggiornamento interfaccia
         print_menu();
@@ -690,7 +694,7 @@ int main(int argc, char** argv) {
         exit(EXIT_FAILURE);
     }
 
-    // listen per TCP connections
+    // listen per connessioni TCP
     if(listen(server_sock, 10) < 0){
         perror("Errore nella listen:");
         exit(EXIT_FAILURE);
@@ -699,7 +703,6 @@ int main(int argc, char** argv) {
     while (1) {
         
         socklen_t addr_len = sizeof(cli_addr);
-        // accept bloccante
         client_sock = accept(server_sock, (struct sockaddr*)&cli_addr, &addr_len);
         if (client_sock < 0) 
             continue;

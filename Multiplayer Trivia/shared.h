@@ -12,28 +12,30 @@
 
 // tutti i tipi di messaggi
 enum type_message {
-    OPTIONS,
-    CHOICE,
-    QUESTION,
-    ANSWER,
-    ACK,
-    NAK,
-    REQUEST_LEADERBOARD,
-    LEADERBOARD,
-    REQUEST_NICKNAME,
-    ENDQUIZ,
+    OPTIONS,                // opzioni per i temi
+    CHOICE,                 // scelta del client
+    QUESTION,               // richiesta domanda
+    ANSWER,                 // risposta del client
+    ACK,                    // ok
+    NAK,                    // non ok
+    REQUEST_LEADERBOARD,    // richiesta leaderboard del client
+    LEADERBOARD,            // leaderboard mandata dal server
+    REQUEST_NICKNAME,       // richiesta del nickname
+    ENDQUIZ,                // fine del quiz
 };
 // tutti i tipi di errori generabili
 enum outcome {
-    SUCCESS,
-    MISSING_BYTES,
-    TYPE_INCONSISTENCY,
-    DISCONNECTION,
-    ABRUPT_DISCONNECTION,
-    GENERIC_ERROR,
-    INVALID_RETURN,     // DEBUG (for send and recv primitives)
-    BUG_DETECTED,       // DEBUG (for coding errors)
-    NOT_ENOUGH_SPACE,   // MALLOC WENT WRONG (per buffer grande nei thread)
+    SUCCESS,              // successo
+    MISSING_BYTES,        // frammentazione per messaggi piccoli
+    TYPE_INCONSISTENCY,   // errore del protocllo
+    DISCONNECTION,        // disconnessione
+    ABRUPT_DISCONNECTION_R, // disconnnessione brusca su recv
+    ABRUPT_DISCONNECTION_W, // disconnessione brusca su send
+    BROKEN_PIPE,          // il client non può scrivere sul buffer di output perchè il server è morto 
+    GENERIC_ERROR,        // -1 
+    INVALID_RETURN,       // DEBUG 
+    BUG_DETECTED,         // DEBUG 
+    NOT_ENOUGH_SPACE,     // MALLOC WENT WRONG (per buffer grande nei thread)
 };
 
 // prototipi delle funzioni

@@ -2,7 +2,6 @@
 
 
 /* blocco define macro*/
-#define PORT 4242           // porta a cui il server offre il servizio
 #define ADDR "127.0.0.1"    // indirizzo
 #define MAXNICKLEN 16       // lunghezza massima del nickname
 #define MAXSIZEBUFIN 1024   // grandezza buffer di ricezione
@@ -166,14 +165,20 @@ int request_leaderboard(char* buf,int sock){
 void waiting(){
     char ch[3];
     do {
-        if(!get_input(ch,3))
+        if(!get_input(ch,3)){
+            retry_input();
             continue;
+        } 
     } while(strcmp(ch,"q"));
     clear_screen();
 }
 /*--------------------------------------------------------------------------------------------*/
 // @ENTRY POINT
 int main(int argc, char** argv){
+    if(argc != 2){
+        printf("Errore nell'utilizzo del comando: ./client porta\n");
+        goto end_game;
+    }
     int my_sock = -1, choice, counter;
     struct sockaddr_in serv_addr;
     char buf_in[MAXSIZEBUFIN]; 
@@ -181,7 +186,7 @@ int main(int argc, char** argv){
     // set della struct sockaddr
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+    serv_addr.sin_port = htons(atoi(argv[1]));
     inet_pton(AF_INET, ADDR, &serv_addr.sin_addr);
 
 
@@ -189,6 +194,7 @@ int main(int argc, char** argv){
     waiting();
 
 start_game:
+
     print_start_menu();
     // blocco iniziale
     do {
@@ -209,7 +215,7 @@ start_game:
     // init socket
     my_sock = socket(AF_INET, SOCK_STREAM, 0);
     if(my_sock < 0){
-        perror("Errore inizializzazione socket ");
+        perror("Errore inizializzazione socket");
         exit(EXIT_FAILURE);
     }
 
@@ -233,6 +239,7 @@ start_game:
             if(request_leaderboard(buf_in, my_sock) != SUCCESS)
                 goto end_game;
             waiting();
+            print_nickname_menu();
             continue;
         }
         // fine del quiz
@@ -330,6 +337,7 @@ start_game:
                     goto end_game;      
                 i--;
                 waiting();
+                print_question_game(buf_in, theme_array[choice].theme_name);
                 continue;
             }
             

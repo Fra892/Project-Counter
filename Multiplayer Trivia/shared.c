@@ -17,38 +17,33 @@
 int send_data(char *buf, uint8_t type, int sock){
     uint32_t len = strlen(buf)+1, len_to_send;
     int ret = send(sock, &type, sizeof(uint8_t), MSG_NOSIGNAL);
-    if(ret < sizeof(uint8_t)){
-        perror("errore nell' invio del tipo:");
+    if(ret < sizeof(uint8_t))
         return get_error_send(ret);
-    }
+    
     len_to_send = htonl(len);
     ret = send(sock, &len_to_send, sizeof(uint32_t), MSG_NOSIGNAL);
-    if(ret < sizeof(uint32_t)){
-        perror("errore nell'invio della lunghezza:");
+    if(ret < sizeof(uint32_t))
         return get_error_send(ret);
-    }
+    
     ret = send(sock, buf, len, MSG_NOSIGNAL);
-    if(ret < len){
-        perror("errore nell'invio del body:");
+    if(ret < len)
         return get_error_send(ret);
-    }
+    
     return SUCCESS;
 }
 
 int send_big_data(char* buf, uint8_t type, int sock){
     uint32_t len = strlen(buf) + 1, len_to_send, sent = 0;
     int ret = send(sock, &type, sizeof(uint8_t), MSG_NOSIGNAL);
-    if(ret < sizeof(uint8_t)){
-        perror("errore nell' invio del tipo:");
+    if(ret < sizeof(uint8_t))
         return get_error_send(ret);
-    }
+    
     len_to_send = htonl(len);
     ret = send(sock, &len_to_send, sizeof(uint32_t), MSG_NOSIGNAL);
 
-    if(ret < sizeof(uint32_t)){
-        perror("errore nell'invio della lunghezza:");
+    if(ret < sizeof(uint32_t))
         return get_error_send(ret);
-    }
+    
     do {
         ret = send(sock, &buf[sent], len - sent, MSG_NOSIGNAL);
         if(ret == -1) return get_error_send(ret);
@@ -62,38 +57,33 @@ int recv_data(char* buf, uint8_t type, int sock){
     uint32_t len;
     uint8_t received_type;
     int ret = recv(sock, &received_type, sizeof(uint8_t), 0);
-    if(ret < sizeof(uint8_t)){
-        perror("errore nella ricezione del tipo:");
+    if(ret < sizeof(uint8_t))
         return get_error_recv(ret);
-    }
+    
     if(type != received_type) return TYPE_INCONSISTENCY;
     ret = recv(sock, &len, sizeof(uint32_t), 0);
-    if(ret < sizeof(uint32_t)){
-        perror("errore nella ricezione della lunghezza:");
+    if(ret < sizeof(uint32_t))
         return get_error_recv(ret);
-    }
+    
     len = ntohl(len);
     ret = recv(sock, buf, len, 0);
-    if(ret < len){
-        perror("errore nella ricezione del body:");
+    if(ret < len)
         return get_error_recv(ret);
-    }
+    
     return SUCCESS; 
 }
 int recv_big_data(char* buf, uint8_t type, int sock){
     uint32_t len, received = 0;
     uint8_t received_type;
     int ret = recv(sock, &received_type, sizeof(uint8_t), 0);
-    if(ret < sizeof(uint8_t)){
-        perror("errore nella ricezione del tipo:");
+    if(ret < sizeof(uint8_t))
         return get_error_recv(ret);
-    }
+    
     if(type != received_type) return TYPE_INCONSISTENCY;
     ret = recv(sock, &len, sizeof(uint32_t), 0);
-    if(ret < sizeof(uint32_t)){
-        perror("errore nella ricezione della lunghezza:");
+    if(ret < sizeof(uint32_t))
         return get_error_recv(ret);
-    }
+    
     len = ntohl(len);
     do {
         ret = recv(sock, &buf[received], len - received, 0);
@@ -107,16 +97,14 @@ int recv_big_data(char* buf, uint8_t type, int sock){
 int recv_just_body(char *buf, int sock){
     uint32_t len;
     int ret = recv(sock, &len, sizeof(uint32_t), 0);
-    if(ret < sizeof(uint32_t)){
-        perror("errore nella ricezione della lunghezza:");
+    if(ret < sizeof(uint32_t))
         return get_error_recv(ret);
-    }
+    
     len = ntohl(len);
     ret = recv(sock, buf, len , 0);
-    if(ret < len){
-        perror("errore nella ricezione del body:");
+    if(ret < len)
         return get_error_recv(ret);
-    }
+    
     return SUCCESS; 
 }
 
@@ -124,9 +112,9 @@ int recv_just_big_body(char *buf, int sock){
     int received = 0;
     uint32_t len;
     int ret = recv(sock, &len, sizeof(uint32_t),0);
-    if(ret < sizeof(uint32_t)){
+    if(ret < sizeof(uint32_t))
         return get_error_recv(ret);
-    }
+    
     len = ntohl(len);
     do {
         ret = recv(sock, &buf[received], len - received, 0);
@@ -157,19 +145,28 @@ int send_just_header(uint8_t type, int sock){
 
 /* FUNZIONI PER DETERMINARE L'ERRORE  -------------------------------------------- */
 int get_error_recv(int ret){
-    return  (ret == 0)?                 DISCONNECTION: 
-            (ret > 0)?                  MISSING_BYTES: 
-            (ret != -1)?                INVALID_RETURN: 
-            (errno == ECONNRESET)?      ABRUPT_DISCONNECTION:
-                                        GENERIC_ERROR;
-
+    if(ret > 0)
+        return MISSING_BYTES;
+    if(ret == 0)
+        return DISCONNECTION;
+    if(ret == -1){
+        if(errno == ECONNRESET)
+            return ABRUPT_DISCONNECTION_R;
+        return GENERIC_ERROR;
+    }
+    return INVALID_RETURN;
 }
 int get_error_send(int ret){
-    return  (ret > 0)?                   MISSING_BYTES:
-            (ret != -1)?                 INVALID_RETURN:
-            (errno == EPIPE)?            ABRUPT_DISCONNECTION:
-            (errno == ECONNRESET)?       ABRUPT_DISCONNECTION:
-                                         GENERIC_ERROR;
+    if(ret > 0)
+        return MISSING_BYTES;
+    if(ret == -1){
+        if(errno == EPIPE)
+            return BROKEN_PIPE;
+        if(errno == ECONNRESET)
+            return ABRUPT_DISCONNECTION_W;
+        return GENERIC_ERROR;
+    }
+    return INVALID_RETURN;
 }
 /*-------------------------------------------------------------------------------- */
 
@@ -177,13 +174,23 @@ int get_error_send(int ret){
 void show_error(int error){
     switch(error){
         case MISSING_BYTES:
-            printf("\nper messaggi piccoli non sono stati inviati tutti i byte\n");
+            printf("\nframmentazione non prevista del messaggio\n");
             break;
         case DISCONNECTION:
-            printf("\ndisconnessione della controparte\n");
+            // recv == 0
+            printf("\nimpossibile ricevere messaggi per disconnessione della controparte\n");
             break;
-        case ABRUPT_DISCONNECTION:
-            printf("\ndisconnessione improvvisa della controparte\n");
+        case ABRUPT_DISCONNECTION_R:
+            // ECONNRESET
+            printf("\nimpossibile ricervere messaggi per disconnessione brusca della controparte\n");
+            break;
+        case ABRUPT_DISCONNECTION_W:
+            // ECONNRESET
+            printf("\nimpossibile mandare messaggi per disconnessione brusca della controparte\n");
+            break;
+        case BROKEN_PIPE:
+            // EPIPE
+            printf("\nimpossibile mandare messaggi per disconnessione della controparte \n");
             break;
         case GENERIC_ERROR:
             printf("\nerrore di comunicazione\n");
