@@ -12,3 +12,31 @@ Now, can we reduce the time spent exploring this decision graph?
 Yes — by using constraints or problem-specific properties to prune branches of the tree. If a partial solution already violates a constraint, we can abandon that branch early. This is the core idea behind backtracking: don't explore what can't possibly work.
 
 Backtracking is powerful because it combines the completeness of brute-force search with practical optimizations that drastically reduce runtime in many real-world cases.
+
+
+# Subsets
+'''cpp
+void dfs(auto& ret, auto& subset, auto& nums, int idx){
+  if(idx >= nums.size()){
+    ret.push_back(subset);
+    return;
+  }
+  for(int i = idx; i < nums.size(); i++){
+    subset.push_back(nums[i]);
+    dfs(ret, subset, nums, i + 1);
+    subset.pop_back();
+  }
+}
+
+
+vector<vector<int>> find_subsets(vector<int>& nums){
+  vector<vector<int>> ret;
+  vector<int> subset;
+  int idx = 0;
+  dfs(ret, subset, nums, idx);
+  
+}
+
+'''
+
+
