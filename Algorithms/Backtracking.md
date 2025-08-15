@@ -1,10 +1,14 @@
 # Backtracking and Complete Searches
-Let's think of any problem, a way to solve this is always to enumerate all the solutions possible and selecting the best while doing so.
-This approach could be useful if there's enough time to go through all the possible solutions, it's trivial that for problems that ask to generate
-permutation or subset, there's no other efficient way. A complete search is always a viable option if we are not worried about time constraints.
-Even though a complete search algorithm has always an exponantial-time complexity backtracking is a technique that in practice can reduce by a lot the number of 
-recursive calls, therefore reducing the running time. Any solution to any problems is made out of choices that impacts the final solution, for example let's say we
-wanna enumerate all the subset of a set s. Every subset is a choice of including or not including an element. This process forms a tree, a decision tree. Sometimes at every step
-there are more than one choice. To explore this graph, a dfs is usually employed. Now let's return to the initial problem, given the constraint the a solution 
-has to follow, is there any way to reduce the explore time of this graph. Yes, usually there are property that can be exploited to cut branches off the tree, this 
-will never be explored
+When solving a problem, one brute-force approach is to enumerate all possible solutions and select the best among them. This approach, known as complete search, is sometimes the only viable method — especially in problems that ask for all permutations, combinations, or subsets. While complete search generally has exponential time complexity, it's a valid approach when the input size is small or when time constraints are relaxed.
+
+To improve efficiency in practice, we often use a technique called backtracking. While backtracking still explores the entire solution space, it prunes parts of the search tree that cannot possibly lead to valid or optimal solutions, thereby reducing the number of recursive calls and improving performance.
+
+Let’s consider the example of generating all subsets of a set S. Each subset is defined by a sequence of binary choices: for each element, we decide whether to include it or not. This process naturally forms a decision tree, where each node represents a partial solution, and each level corresponds to a choice for one element.
+
+In more complex problems, each step may offer multiple choices, and the decision process forms a state space tree or search graph. To explore this graph, we typically use depth-first search (DFS) because it aligns well with recursive backtracking.
+
+Now, can we reduce the time spent exploring this decision graph?
+
+Yes — by using constraints or problem-specific properties to prune branches of the tree. If a partial solution already violates a constraint, we can abandon that branch early. This is the core idea behind backtracking: don't explore what can't possibly work.
+
+Backtracking is powerful because it combines the completeness of brute-force search with practical optimizations that drastically reduce runtime in many real-world cases.
