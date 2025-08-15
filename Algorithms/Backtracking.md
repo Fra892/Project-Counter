@@ -15,7 +15,7 @@ Backtracking is powerful because it combines the completeness of brute-force sea
 
 
 # Subsets
-'''cpp
+```cpp
 void dfs(auto& ret, auto& subset, auto& nums, int idx){
   if(idx >= nums.size()){
     ret.push_back(subset);
@@ -36,7 +36,7 @@ vector<vector<int>> find_subsets(vector<int>& nums){
   dfs(ret, subset, nums, idx);
   
 }
+```
 
-'''
 
 
