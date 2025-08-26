@@ -161,56 +161,36 @@ Let's now enumerate all the combinations in [1,...,n] of k elements.
         return ret;
     }
 ```
-Notice that if k - combination.size() is the number of element to push in the combination to reach k, while n - i + 1 it's the amount of element i can push in the combination. Let's take $n = 7$ and $k = 4$, let's position ourself in this state space $S = \{1\}$, $i = 6$, in this configuration if i push all elements remaining to push $S = \{1,6,7\}$ which is not enough to reach k. So it's better to not compute all of those possibilities since we know that those branches can't lead to a possible solution.
+Notice that if k - combination.size() is the number of element to push in the combination to reach k, while n - i + 1 it's the amount of element i can push in the combination. Let's take $n = 7$ and $k = 4$, let's position ourself in this state space $S = \{1\}$, $i = 6$, in this configuration if i push all elements remaining to push $S = \{1,6,7\}$ which is not enough to reach k. So it's better to not compute all of those possibilities since we know that those branches can't lead to a possible solution. This technique is called backtracking, we'll formally introduce it in the next chapter just keep in mind that even if it doesn't theoretically reduce the time complexity, in practice reduce the number of branches during the state space search. This can reduce the runtime of an algorithm by multiple orders of magnitude.
 
-# NQueens
-The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
-
-Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
-
-Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
-
+## Letter Combinations of a Phone Number
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
 ```cpp
-void search_space(auto& grid, auto& ret, const int& N, int put, auto& queen_pos){
-  // stop condition we put four queens 
-  // putting a queen in some place of a row is the same thing as processing the row itself
-  if(put == N){
-    ret.push_back(grid);
-    return;
-  }
-  // iterate the row
-  for(int i = 0; i < N; i++){
-    bool found = false;
-    for(const auto& pos : queen_pos){
-      int c_d = pos.first - pos.second;
-      int c_a = pos.first + pos.second;
-      int col = pos.second;
-      if(col == i || c_d == put - i|| c_a == put + i){
-        found = true;
-        break;
-      }
+    void dfs(auto& ret, string& digits, auto& mp, string& tmp, int idx){
+        if(idx >= digits.size()){
+            ret.push_back(tmp);
+            return;
+        }
+        for(char a = mp[digits[idx]]; a < mp[(char)(digits[idx] + 1)]; a = (char)(a + 1)){
+            tmp += a;
+            dfs(ret, digits, mp, tmp, idx + 1);
+            tmp.pop_back();
+        }
     }
-    if(found)
-      continue;
-    queen_pos[put] = i;
-    grid[put][i] = 'Q';
-    search_space(grid, ret, N, put + 1, queen_pos);
-    grid[put][i] = '.';
-    queen_pos.erase(put);
-  }
-}
 
-vector<vector<string>> solveNQueens(int n) {
-  // create the grid
-  vector<string> grid(n, string(n, '.'));
-  vector<vector<string>> ret = {};
-  unordered_map<int,int> queen_pos;
-  int put = 0;
-  search_space(grid, ret, n, put, queen_pos);
-  return ret;
-}
-
+    vector<string> letterCombinations(string digits) {
+        if(!digits.size())
+            return {};
+        unordered_map<char,char> mp = {{'2','a'},{'3','d'},{'4','g'},{'5','j'},{'6','m'},
+                                      {'7','p'},{'8','t'},{'9','w'},{':','{'}};
+        vector<string> ret;
+        string tmp = "";
+        dfs(ret,digits,mp,tmp,0);
+        return ret;
+        
+    }
 ```
+
 
 
 
