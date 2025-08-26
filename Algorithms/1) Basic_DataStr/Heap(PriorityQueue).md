@@ -13,18 +13,5 @@ A **heap**, also known as a **priority queue**, is a nearly balanced **binary tr
 - **Min-heap**: For any node, the values in its subtrees are **greater than or equal to** its value.  
   → The root of the heap contains the **minimum** value.
 
-  ```mermaid
-graph TD
-    A(50)
-    B(30)
-    C(20)
-    D(10)
-    E(15)
-    F(5)
 
-    A --> B
-    A --> C
-    B --> D
-    B --> E
-    C --> F
-```
+
