@@ -12,7 +12,8 @@ A **heap**, also known as a **priority queue**, is a nearly balanced **binary tr
 
 - **Min-heap**: For any node, the values in its subtrees are **greater than or equal to** its value.  
   → The root of the heap contains the **minimum** value.
-![Max Heap](Algorithms/B) Images/heap.png)
+![Max Heap](Algorithms/Images/heap.png)
+
 
 
 
