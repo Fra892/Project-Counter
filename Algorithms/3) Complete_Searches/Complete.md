@@ -200,9 +200,60 @@ Each digit from `2` to `9` corresponds to a fixed set of letters. For example:
 
 The recursive process explores all possible strings that can be formed by picking **one letter per digit**, in the order they appear.
 
-
-
-
+## Other Implementations
+It is possible to generate subsets using bit masks, let's say n is the length of the set by doing
+```cpp
+for(int i = 0; i < 1<<n; i++){
+// generate subsets
+}
+```
+we can generate all subsets of the set, this means that with $n = 3$, i = 101 -> (nums[2],nums[0]).
+```cpp
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int size = nums.size();
+        vector<int> sol;
+        vector<vector<int>> ret;
+        for(int i = 0; i < (1U << size); i++){
+            sol = {};
+            for(int b = 0; b < size; b++){
+                if(i & (1U << b))
+                    sol.push_back(nums[b]);
+                
+            }
+            ret.push_back(sol);
+        }
+        return ret;
+    }
+```
+This is the iterative version using bitmasks instead of recursion.
+We can check also check uniqueness of subsets with bitmasks:
+```cpp
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> ret;
+        vector<int> sol;
+        sort(nums.begin(), nums.end());
+        for(int i = 0; i < (1U << n); i++){
+            sol = {};
+            bool skip_subset = false;
+            for(int b = 0; b < n; b++){
+                // not included 
+                if(!(i & (1U << b)))
+                    continue;
+                if(b > 0 && nums[b] == nums[b - 1] && !(i &(1U << b - 1))){
+                    skip_subset = true;
+                    break;
+                }
+                sol.push_back(nums[b]);
+            }
+            if(!skip_subset)
+                ret.push_back(sol);
+        }
+        return ret;
+    }
+```
+The logic is similar but slightly different: if the elements are equal and the previous element is not included it means 
+that it is a duplicate, since the old bitmasks already processed all the branching subsets.
 
 
 
