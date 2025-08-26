@@ -85,7 +85,7 @@ Consider a set $s$  that it cointains duplicates (exmp: $(0,1,1,2,2)$), in this 
             ret.push_back(permutation);
             return;
         }
-        int prev_el = 11; // -10 <= nums[i] <= 10
+        int prev_el = 11; // -10 <= nums[i] <= 10 (if no constraint use INF_MIN) 
         for(int i = 0; i < nums.size(); i++){
             if(used[i] || prev_el == nums[i])
                 continue;
@@ -107,6 +107,14 @@ Consider a set $s$  that it cointains duplicates (exmp: $(0,1,1,2,2)$), in this 
         dfs(nums, permutation, ret, used);
         return ret; 
     }
+```
+The code above finds all the unique permutations of an array nums, in this cases the common strategy is to sort the array and ignore identical elements that come after the first fo those that we push, beacause it leads to overlapping permutations or subsets. The condition could be rewrote as 
+```cpp
+// inside for
+if(i > 0 && nums[i] == nums[i - 1])
+  continue;
+// push state
+// pop state
 ```
 
 # NQueens
