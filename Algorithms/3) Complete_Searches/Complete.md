@@ -136,7 +136,31 @@ The Unique subset code behaves in the same way
 ```
 Notice that the condition for pruning the search space with duplicates, depends on where we start to iterate on choices. nums[i - 1] == nums[i] indicates that we already analyzed the subsets with nums[i] in that position.
 
+# Combinations
+Let's now enumerate all the combinations in [1,...,n] of k elements. 
+```cpp
+    void dfs(int n, int k, vector<vector<int>>& ret, vector<int>& combination, int numb){
+        if(combination.size() == k){
+            ret.push_back(combination);
+            return;
+        }
+        for(int i = numb; i <= n; i++){
+            // backtracking
+            if(k - combination.size() > n - i + 1)
+                break;
+            combination.push_back(i);
+            dfs(n, k, ret, combination, i + 1);
+            combination.pop_back();
+        }
 
+    }
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> ret = {};
+        vector<int> combination = {};
+        dfs(n, k, ret, combination, 1);
+        return ret;
+    }
+```
 # NQueens
 The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
 
