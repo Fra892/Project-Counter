@@ -9,12 +9,11 @@ Tha aim of complete searches is to explore all the solutions to the problems to 
 - Time-Complexity The algorithm has exponential time-complexity since it's analyzing all possible states.
 - Memory-Complexity If implmented with recursion, the recursive calls allocated on the stack can cause stack overflow even for small instances with a moderate number of branches in the state space.
   
-
-
 # Subsets
 Declaration: Given an array of integers nums representing a set, return an array containing all possible subset of the set nums. Order is not important.
 ```cpp
 void dfs(auto& ret, auto& subset, auto& nums, int idx){
+  // stop condition
   if(idx >= nums.size()){
     ret.push_back(subset);
     return;
@@ -23,8 +22,9 @@ void dfs(auto& ret, auto& subset, auto& nums, int idx){
     subset.push_back(nums[i]);
     // accept choice
     dfs(ret, subset, nums, i + 1);
-    subset.pop_back();
     // reject choice
+    subset.pop_back();
+    
   }
 }
 
@@ -38,8 +38,45 @@ vector<vector<int>> find_subsets(vector<int>& nums){
   
 }
 ```
-This code shows the implementation using the classic dfs structure.
-We note that there is no pruning here, let's now see a problem where backtracking comes into play.
+As we see for each element in the set, we are deciding to push it or not, the recursive call makes us dfs the search space where such element is included, when the dfs returns the element won't be pushed, since we already analyzed the search space 
+where the element is included, now we have to search the state space in which the element is not included.
+
+# Permutations
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+```cpp
+    void dfs(vector<int>& nums, vector<int>& permutation, vector<vector<int>>& ret, vector<bool>& used){
+        // end condition
+        if(permutation.size() == nums.size()){
+            ret.push_back(permutation);
+            return;
+        }
+        // choose an index
+        for(int i = 0; i < nums.size(); i++){
+            // see if it's already in the permutation
+            if(used[i] == true)
+                continue;
+            // push state
+            used[i] = true;
+            permutation.push_back(nums[i]);
+            dfs(nums, permutation, ret, used);
+            // pop state
+            used[i] = false;
+            permutation.pop_back();
+        }
+    }
+
+    vector<vector<int>> permute(vector<int>& nums) {
+        // track indeces used with a vector
+        vector<bool> used(nums.size(), false);
+        vector<int> permutation = {};
+        vector<vector<int>> ret = {};
+        dfs(nums, permutation, ret, used);
+        return ret;
+    }
+```
+Computationally a harder problem than subset since $O(n!) > O(2^n)$. The approach i used in this case is tracking, what indeces i pushed in the forming permutations, every time we rescan all vector to search for indeces that are not being used. In this case the choice is pushing nums[i] in a precise order.
+
+
 
 # NQueens
 The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
