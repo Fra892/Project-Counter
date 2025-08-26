@@ -12,31 +12,25 @@ Tha aim of complete searches is to explore all the solutions to the problems to 
 ## Subsets
 Declaration: Given an array of integers nums representing a set, return an array containing all possible subset of the set nums. Order is not important.
 ```cpp
-void dfs(auto& ret, auto& subset, auto& nums, int idx){
-  // stop condition
-  if(idx >= nums.size()){
-    ret.push_back(subset);
-    return;
-  }
-  for(int i = idx; i < nums.size(); i++){
-    subset.push_back(nums[i]);
-    // accept choice
-    dfs(ret, subset, nums, i + 1);
-    // reject choice
-    subset.pop_back();
-    
-  }
-}
+      void dfs(vector<vector<int>>& ret, vector<int>& subset, vector<int>& nums, int idx){
+        // process subset 
+        ret.push_back(subset);
+        for(int i = idx; i < nums.size(); i++){
+            subset.push_back(nums[i]);
+            // accept choice
+            dfs(ret, subset, nums, i + 1);
+            // reject choice
+            subset.pop_back();
+        }
+    }
 
-
-vector<vector<int>> find_subsets(vector<int>& nums){
-  vector<vector<int>> ret;
-  vector<int> subset;
-  int idx = 0;
-  dfs(ret, subset, nums, idx);
-  return ret;
-  
-}
+    vector<vector<int>> subsets(vector<int>& nums){
+        vector<vector<int>> ret;
+        vector<int> subset;
+        int idx = 0;
+        dfs(ret, subset, nums, idx);
+        return ret;
+    }
 ```
 As we see for each element in the set, we are deciding to push it or not, the recursive call makes us dfs the search space where such element is included, when the dfs returns the element won't be pushed, since we already analyzed the search space 
 where the element is included, now we have to search the state space in which the element is not included.
@@ -116,6 +110,32 @@ if(i > 0 && nums[i] == nums[i - 1])
 // push state
 // pop state
 ```
+The Unique subset code behaves in the same way 
+```cpp
+    void dfs(auto& ret, auto& subset, auto& nums, int idx){
+        ret.push_back(subset);
+        for(int i = idx; i < nums.size(); i++){
+            if(i > idx  && nums[i] == nums[i - 1])
+                continue;
+            subset.push_back(nums[i]);
+            // accept choice
+            dfs(ret, subset, nums, i + 1);
+            // reject choice
+            subset.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsetsUnique(vector<int>& nums){
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> ret;
+        vector<int> subset;
+        int idx = 0;
+        dfs(ret, subset, nums, idx);
+        return ret;
+    }
+```
+Notice that the condition for pruning the search space with duplicates, depends on where we start to iterate on choices. nums[i - 1] == nums[i] indicates that we already analyzed the subsets with nums[i] in that position.
+
 
 # NQueens
 The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
