@@ -1,4 +1,4 @@
-## Complete Searches
+# Complete Searches
 When solving a problem, one brute-force approach is to enumerate all possible solutions and select the best among them. This approach, known as complete search, is sometimes the only viable method — especially in problems that ask for all permutations, combinations, or subsets. While complete search generally has exponential time complexity, it's a valid approach when the input size is small or when time constraints are relaxed.
 
 Let’s consider the example of generating all subsets of a set S. Each subset is defined by a sequence of binary choices: for each element, we decide whether to include it or not. This process naturally forms a decision tree, where each node represents a partial solution, and each level corresponds to a choice for one element.
@@ -9,7 +9,7 @@ Tha aim of complete searches is to explore all the solutions to the problems to 
 - Time-Complexity The algorithm has exponential time-complexity since it's analyzing all possible states.
 - Memory-Complexity If implmented with recursion, the recursive calls allocated on the stack can cause stack overflow even for small instances with a moderate number of branches in the state space.
   
-# Subsets
+## Subsets
 Declaration: Given an array of integers nums representing a set, return an array containing all possible subset of the set nums. Order is not important.
 ```cpp
 void dfs(auto& ret, auto& subset, auto& nums, int idx){
@@ -41,7 +41,7 @@ vector<vector<int>> find_subsets(vector<int>& nums){
 As we see for each element in the set, we are deciding to push it or not, the recursive call makes us dfs the search space where such element is included, when the dfs returns the element won't be pushed, since we already analyzed the search space 
 where the element is included, now we have to search the state space in which the element is not included.
 
-# Permutations
+## Permutations
 Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
 ```cpp
     void dfs(vector<int>& nums, vector<int>& permutation, vector<vector<int>>& ret, vector<bool>& used){
@@ -76,7 +76,38 @@ Given an array nums of distinct integers, return all the possible permutations. 
 ```
 Computationally a harder problem than subset since $O(n!) > O(2^n)$. The approach i used in this case is tracking, what indeces i pushed in the forming permutations, every time we rescan all vector to search for indeces that are not being used. In this case the choice is pushing nums[i] in a precise order.
 
+## Unique Subsets and Permutation
+Consider a set $s$  that it cointains duplicates (exmp: $(0,1,1,2,2)$), in this we'll find repeated permutations and subsets, what if i want to find the unique permutations or subsets of such set.  
 
+```cpp
+    void dfs(vector<int>& nums, vector<int>& permutation, vector<vector<int>>& ret, vector<bool>& used){
+        if(nums.size() == permutation.size()){
+            ret.push_back(permutation);
+            return;
+        }
+        int prev_el = 11; // -10 <= nums[i] <= 10
+        for(int i = 0; i < nums.size(); i++){
+            if(used[i] || prev_el == nums[i])
+                continue;
+            used[i] = true;
+            permutation.push_back(nums[i]);
+            dfs(nums, permutation, ret, used);
+            permutation.pop_back();
+            // we can have equal combination since it's the same as the one we last pushed
+            prev_el = nums[i];
+            used[i] = false;
+        }
+    }
+
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<bool> used(nums.size(), false);
+        vector<int> permutation = {};
+        vector<vector<int>> ret = {};
+        dfs(nums, permutation, ret, used);
+        return ret; 
+    }
+```
 
 # NQueens
 The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
