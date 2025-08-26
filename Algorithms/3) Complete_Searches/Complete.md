@@ -255,6 +255,50 @@ We can check also check uniqueness of subsets with bitmasks:
 The logic is similar but slightly different: if the elements are equal and the previous element is not included it means 
 that it is a duplicate, since the old bitmasks already processed all the branching subsets.
 
+Of course the array(set) can't be too long, with an int we have 32 bit usually (use certified types like int_32t to be sure it's 32 bits), this means that the set cannot have more than 32 elements.
+
+Let's end the chapter with another possible implementation to compute permutations:
+```cpp
+    vector<vector<int>> permute(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> permutation;
+        for(int i = 0; i < n; i++){
+            permutation.push_back(i);
+        }
+        vector<vector<int>> ret;
+        vector<int> subset;
+        do{
+            for(auto &el : permutation)
+                subset.push_back(nums[el]);
+            ret.push_back(subset);
+            subset.clear();
+        }while(next_permutation(permutation.begin(), permutation.end()));
+        return ret;   
+    }
+```
+The function next_permutation computes the next lexicographic smaller permutation, and it explore every permutation if and only if the starting permutation is the smallest of all (lexicographically).
+In the code showed above we would like to compute every permutation, counting duplicates, so it suffices to permute the indices. Start with the identity permutation and then iterate using next_permutation.
+If we don't want duplicates, it's surprisingly, easier:
+```cpp
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        vector<int> permutation;
+        for(int i = 0; i < n; i++)
+            permutation.push_back(nums[i]);
+        
+        vector<vector<int>> ret;
+        do{
+            ret.push_back(permutation);
+        }while(next_permutation(permutation.begin(), permutation.end()));
+        return ret;
+        
+    }
+```
+Start with the lexicographically smaller permutation of values and then iterate. To find the starting permutation you just need to sort the vector.
+
+
+
 
 
 
