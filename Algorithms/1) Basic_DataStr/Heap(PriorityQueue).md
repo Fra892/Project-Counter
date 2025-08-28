@@ -158,10 +158,70 @@ The standard library implementation (std::priority_queue) can't be initialized w
 
 
 
-## Applications 
+# Applications
 
 let's now list problems and solutions that are solved with an heap or a priority queue.
 
+## SJF CPU
+You are given  n tasks labeled from 0 to n - 1 represented by a 2D integer array tasks, where `tasks[i] = [enqueueTimei, processingTimei]` means that the `task[i]` will be available to process at `enqueueTime[i]` and will take `processingTime[i]` to finish processing.
+
+You have a single-threaded CPU that can process at most one task at a time and will act in the following way:
+
+- If the CPU is idle and there are no available tasks to process, the CPU remains idle.
+- If the CPU is idle and there are available tasks, the CPU will choose the one with the shortest processing time. 
+- If multiple tasks have the same shortest processing time, it will choose the task with the smallest index.
+
+
+Once a task is started, the CPU will process the entire task without stopping. The CPU can finish a task then start a new one instantly.
+Return the order in which the CPU will process the tasks.
+
+```cpp
+vector<int> getOrder(vector<vector<int>>& tasks) {
+    auto cmp = [](pair<int, int>a, pair<int,int>b ){
+        if(a.second == b.second)
+            return a.first > b.first;
+        return a.second > b.second;
+    };
+
+    priority_queue<pair<int,int>, vector<pair<int,int>>, decltype(cmp)> pq(cmp);
+
+    for(int i = 0; i < tasks.size(); i++)
+        tasks[i].push_back(i);
+
+    sort(tasks.begin(), tasks.end(), [](vector<int>a, vector<int>b){
+                                    return a[0] < b[0];
+                                    });
+
+    vector<int> ret = {};
+    int prev_time = tasks[0][0];
+    int idx = 0;
+
+    while(idx < tasks.size()){
+        //enqueueing
+        while(idx < tasks.size() && tasks[idx][0] <= prev_time){
+            pq.emplace(tasks[idx][2], tasks[idx][1]);
+            idx++;
+        }
+            // pop elem
+        if(pq.empty()){
+            prev_time = tasks[idx][0];
+            continue;
+        }
+                
+        ret.push_back(pq.top().first);
+        prev_time += pq.top().second;
+        pq.pop();
+    }
+            
+
+    while(!pq.empty()){
+        ret.push_back(pq.top().first);
+        pq.pop();
+    }
+
+    return ret; 
+}
+```
 
 
 
