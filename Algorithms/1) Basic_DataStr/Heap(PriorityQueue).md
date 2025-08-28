@@ -24,6 +24,8 @@ This is true if you are implementing a 1-indexed structure, to implement a 0-ind
 - father: `(i - 1)/2`
 - left-son: `2*i + 1`
 - right-son: `2*i + 2`
+
+  
 Here is a possible implementation of a dynamic heap based on vector<int> container.
 ```cpp
 class maxHeap{
@@ -110,6 +112,7 @@ void print_heap(){
     }
 
 ```
+
 
 
 
