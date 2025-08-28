@@ -17,11 +17,13 @@ A **heap**, also known as a **priority queue**, is a nearly balanced **binary tr
 Heaps usually have a size. Note that the stdlib implementation std::priority_queue has a dynamic length (this kind of heap can be made with pointers, or with dynamic arrays). To implement static sized an array it's enough. For each index $i$ you can calculate:
 - father: `i/2`
 - left-son: `2*i`
-- right-son: `2*i + 1`\\
+- right-son: `2*i + 1`
+
+  
 This is true if you are implementing a 1-indexed structure, to implement a 0-indexed structure the formulas are slightly different:
 - father: `(i - 1)/2`
 - left-son: `2*i + 1`
-- right-son: `2*i + 2`\\
+- right-son: `2*i + 2`
 Here is a possible implementation of a dynamic heap based on vector<int> container.
 ```cpp
 class maxHeap{
@@ -108,6 +110,7 @@ void print_heap(){
     }
 
 ```
+
 
 
 
