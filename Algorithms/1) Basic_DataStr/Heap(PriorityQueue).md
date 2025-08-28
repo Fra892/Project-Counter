@@ -226,6 +226,44 @@ In this problem we have to first sort the array for enqueue time (note that we s
 After this we simulate the process, putting every element that has to be enqueued at that time in a priority, queue, when the cpu is idle, it extracts, the job with least 
 processing time.
 
+std::priotity_queue can take custom compare operators, in this i declared the operator via a lambda function that compares the two elements. By default priority_queue is a maxheap and counterintuitively less<int>() is applied. If a minHeap behaviour is desired, just use greater<int>(), define a lambda funcion, or use custom struct compare, providing a boolean function that fits your needs. 
+
+## Merge K sorted lists
+You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+
+Merge all the linked-lists into one sorted linked-list and return it
+```cpp
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        auto cmp = [](ListNode* a, ListNode* b) {
+            return a->val > b->val; // min-heap
+        };
+        // it gives back the pointer to the elements we want to concatenate
+        priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> minheap(cmp);
+        // insert every list in the minheap
+        for (auto list : lists) 
+            if (list) minheap.push(list);
+        // new list pointer
+        ListNode* dummy = nullptr;
+        // pointer for inserting new nodes
+        ListNode** ptr = &dummy;
+        while(!minheap.empty()){
+            auto node = minheap.top();
+            if(node->next)
+                minheap.push(node->next);
+            minheap.pop();
+            node->next = *ptr;
+            *ptr = node;
+            ptr = &(*ptr)->next;
+        }
+
+        return dummy;
+        
+    }
+```
+This problem it's easly solvable with a priority_queue, just take push all the pointers in the minHeap, and pop the one that points to the node with 
+minimum value, iterate and connect to the tail of the new linked list. I like to use double pointers to handle inserts and cancelation on lists since i don't have to modify the head of the list in case of a head insert or  a head delete.
+## Top K most frequent words
+
 
 
 
