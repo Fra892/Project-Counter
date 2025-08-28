@@ -222,6 +222,10 @@ vector<int> getOrder(vector<vector<int>>& tasks) {
     return ret; 
 }
 ```
+In this problem we have to first sort the array for enqueue time (note that we save the indeces, since they want the order with the original indeces).
+After this we simulate the process, putting every element that has to be enqueued at that time in a priority, queue, when the cpu is idle, it extracts, the job with least 
+processing time.
+
 
 
 
