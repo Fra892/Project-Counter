@@ -28,8 +28,11 @@ public:
         last = 0;
     }
     void push(int el){
-        if(last == size)
-                return;
+        if(last == size){
+          size *= 2; // or size += 10;
+          Hp.resize(size);
+        }
+        // resize the heap
         Hp[last++] = el;
         up();
     }
