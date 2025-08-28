@@ -263,6 +263,46 @@ Merge all the linked-lists into one sorted linked-list and return it
 This problem it's easly solvable with a priority_queue, just take push all the pointers in the minHeap, and pop the one that points to the node with 
 minimum value, iterate and connect to the tail of the new linked list. I like to use double pointers to handle inserts and cancelation on lists since i don't have to modify the head of the list in case of a head insert or  a head delete.
 ## Top K most frequent words
+Given an array of strings words and an integer k, return the k most frequent strings.
+Return the answer sorted by the frequency from highest to lowest. Sort the words with the same frequency by their lexicographical order.
+```cpp
+vector<string> topKFrequent(vector<string>& words, int k) {
+        auto cmp = [](const pair<string,int>& a, const pair<string,int>& b){
+            if (a.second == b.second)
+                return a.first < b.first;   
+            return a.second > b.second;      
+        };
+
+        priority_queue<pair<string, int>, vector<pair<string,int>>, decltype(cmp)> pq(cmp);
+        unordered_map<string,int> mp;
+        vector<string> ret;
+
+        for(const auto& word: words)
+            mp[word]++;
+
+        for(const auto& el: mp){
+            pq.push(el);
+            if(pq.size() > k)
+                pq.pop();
+        }
+
+        while(!pq.empty()){
+            ret.push_back(pq.top().first);
+            pq.pop();
+        }
+
+        reverse(ret.begin(), ret.end());
+        return ret;
+    }
+```
+The approach is similar to the one we dicussed earlier. Invert the condition (maxHeap -> MinHeap which means a.freq > b.freq) and smaller lexicografical order, this means: "if i get a string with higher lexicograpfical order i should put it in the root, so it's the first that gets popped" (only if the freq is equal). From this we get that if(a.freq == b.freq){ return a.word < b.word}. The rest of the code is very easy to follow:
+- build a hashmap that counts the frequency for each word
+- insert each pair (word ,frequency) in the minHeap with the custom lambda function. 
+- pop the root element is the size is exceeded
+- reverse and return
+Note that we could have use a maxHeap filling the Vector with K element, but this idea leads to a priority_queue with unbounded size, resulting in a not efficient approach memory wise.
+
+ 
 
 
 
