@@ -40,7 +40,7 @@ public:
     }
     void push(int el){
         if(last == size){
-          size *= 2; // or size += 10;
+          size *= 2; // or some grow factor
           Hp.resize(size);
         }
         // resize the heap
@@ -114,36 +114,48 @@ void print_heap(){
 ```
 ## MaxHeaps and MinHeaps
 Let's now think of a problem. Given a datastream of integer store the K's Maximum elements. If we are choosing to implement a MaxHeap we are sure that the 
-root `Hp[0]` contains the biggest element, but the other k - 1 elements are not sorted in the heap. We can look at the problem from another perspective and invert the logic of the heap. Let's say i use a minheap, i have k element in the heap and Hp[0] is the smallest, what would happen if i added another element such that is smallest than the root, This element will be pushed to the top and the previous root would be somewhere in the heap. So now i can pop the root to get the k maximum elements:
+root `Hp[0]` contains the biggest element, but the other k - 1 elements are not sorted in the heap. We can look at the problem from another perspective and invert the logic of the heap. Let's say i use a minheap, i have k element in the heap and Hp[0] is the smallest, what would happen if i added another element such that is smaller than the root?
+This element will be pushed to the top and the previous root would be somewhere in the heap. So now i can pop the root to get the k maximum elements:
 ``` cpp
     // reverse the logic and use a MinHeap instead of a MaxHeap
-    // add function currSize() to get the actual length of the Heap
+    // add function currSize() to get the actual length of the Heap in classMinHeap or MaxHeap(if asking for k smallest elements)
     int currSize(){
         return last;
     }
 
     int main(){
-        int x; MinHeap Hp(10); //expected size but can be expanded
+        int x; MinHeap Hp(8); // one more than what we need otherwise can't process k + 1 element
         int K = 7;
         while(cin >> x){
             Hp.push(x);
             if(Hp.currSize() > 7)
                 Hp.pop();     
         }
+        // store the results
         vector<int> max_k_elements(K,0);
+        int i = 0;
+        // fill the vector
         while(K--)
             max_k_elements[i++] = Hp.pop();
+
+        // invert since it's asking for the maxiumum
         reverse(max_k_elements.begin(), max_k_elements.end());
         for(auto& el : max_k_elements)
             cout << el << ' ';
         cout << '\n';
         return 0;
     }
-
-
-
-
 ```
+The standard library implementation (std::priority_queue) can't be initialized with a certain size, but the method are similar to the ones we defined in our implementation.
+
+
+
+## Applications 
+
+let's now list problems and solutions that are solved with an heap or a priority queue.
+
+
+
 
 
 
