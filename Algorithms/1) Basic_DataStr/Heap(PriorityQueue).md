@@ -57,9 +57,16 @@ public:
 
     void down() {
         int i = 0;
-        // left aligned just check condition for left son
+        // left aligned just check condition for left son(there are no holes)
         while (2 * i + 1 < last) {
-            int new_index = (Hp[2 * i + 1] > Hp[2 * i + 2]) ? 2 * i + 1 : 2 * i + 2;
+            int new_index;
+            if((2 * i + 2) == last)
+                new_index = 2*i + 1;
+            else
+                new_index = (Hp[2 * i + 1] > Hp[2 * i + 2]) ? 2 * i + 1 : 2 * i + 2;
+            // no need to swap anymore (right position)
+            if(Hp[i] > Hp[new_index])
+                break;
             swap(Hp[i], Hp[new_index]);
             i = new_index;
         }
@@ -76,6 +83,7 @@ public:
 };  
 
 ```
+Note that we are filling using last++ and --last, every value will be inserted in a certain level from left to right, hence there are no holes in the binary tree, this ensures a nice logarithmic time for up and down functions, since it will never collapse to a linked list. 
 This is a zero indexed maxHeap, note that we can print it using a tecinque called BFS, we will study this technique better later on. To try it here's my implementation:
 ```cpp
 void print_heap(){
@@ -114,7 +122,7 @@ void print_heap(){
 ```
 ## MaxHeaps and MinHeaps
 Let's now think of a problem. Given a datastream of integer store the K's Maximum elements. If we are choosing to implement a MaxHeap we are sure that the 
-root `Hp[0]` contains the biggest element, but the other k - 1 elements are not sorted in the heap. We can look at the problem from another perspective and invert the logic of the heap. Let's say i use a minheap, i have k element in the heap and Hp[0] is the smallest, what would happen if i added another element such that is smaller than the root?
+root `Hp[0]` contains the biggest element, but the other k - 1 elements are not sorted in the heap. We can look at the problem from another perspective and invert the logic of the heap. Let's say i use a minheap, i have already k element in the heap and `Hp[0]` is the smallest, what would happen if i added another element such that is smaller than the root?
 This element will be pushed to the top and the previous root would be somewhere in the heap. So now i can pop the root to get the k maximum elements:
 ``` cpp
     // reverse the logic and use a MinHeap instead of a MaxHeap
