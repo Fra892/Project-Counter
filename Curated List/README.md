@@ -1,4 +1,4 @@
-#Algorithmic Problem Solving List
+## Algorithmic Problem Solving List
 
 This document is a personal collection of competitive programming problems I have solved over time. Each entry includes a brief restatement of the problem, the extensive reasoning process that led to the solution, and the final code implementation.
 
